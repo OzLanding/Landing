@@ -2,7 +2,7 @@
 
 set -e
 
-. /app/.venv/bin/activate
+. /opt/venv/bin/activate
 
 echo "Applying database migrations..."
 python manage.py migrate
