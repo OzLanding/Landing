@@ -28,7 +28,7 @@
 
 ## ERD
 
-![ERD](landing_ERD.png)
+![ERD](landing_ERD_v2.png)
 
 ---
 
