@@ -31,6 +31,7 @@ jobs:
 
     env:
       DJANGO_SETTINGS_MODULE: ${{ matrix.settings_module }}
+      SECRET_KEY: ${{ secrets.SECRET_KEY }} # 추가
       DB_HOST: localhost
       DB_PORT: 5432
       DB_NAME: ${{ secrets.DB_NAME }}
