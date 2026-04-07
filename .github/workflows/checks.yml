@@ -10,6 +10,10 @@ jobs:
   ci:
     runs-on: ubuntu-latest
 
+    strategy:
+      matrix:
+        settings_module: ["Landing.settings.dev", "Landing.settings.prod"]
+
     services:
       postgres:
         image: postgres:16
@@ -26,7 +30,7 @@ jobs:
           --health-retries 5
 
     env:
-      DJANGO_SETTINGS_MODULE: Landing.settings.dev
+      DJANGO_SETTINGS_MODULE: ${{ matrix.settings_module }}
       DB_HOST: localhost
       DB_PORT: 5432
       DB_NAME: ${{ secrets.DB_NAME }}

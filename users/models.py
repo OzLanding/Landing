@@ -21,6 +21,7 @@ class UserManager(BaseUserManager):
         extra_fields.setdefault("is_admin", True)
         extra_fields.setdefault("is_staff", True)
         extra_fields.setdefault("is_superuser", True)
+        extra_fields.setdefault("is_active", True)  # 추가
         return self.create_user(email, password, **extra_fields)
 
 
@@ -28,6 +29,8 @@ class User(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(unique=True, null=False)
     username = models.CharField(max_length=50, null=False)
     phone = models.CharField(max_length=20, blank=True, null=True)
+    social_provider = models.CharField(max_length=50, blank=True, null=True)
+    social_uid = models.CharField(max_length=255, blank=True, null=True)
     is_active = models.BooleanField(default=True)
     is_admin = models.BooleanField(default=False)
     is_staff = models.BooleanField(default=False)

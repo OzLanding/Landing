@@ -28,3 +28,6 @@ db.sqlite3
 /postgres_data/
 
 .claude/
+
+# macOS
+.DS_Store
