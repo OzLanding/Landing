@@ -25,3 +25,5 @@ mediafiles/
 # Database
 db.sqlite3
 /postgres_data/
+
+.claude/
