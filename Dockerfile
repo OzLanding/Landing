@@ -15,9 +15,6 @@ RUN uv sync --all-packages
 
 COPY . .
 
-COPY ./scripts /scripts
-RUN chmod +x /scripts/run.sh
-
 EXPOSE 8000
 
-CMD ["/scripts/run.sh"]
+CMD ["sh", "-c", "uv run python manage.py migrate && uv run python manage.py collectstatic --noinput && uv run gunicorn Landing.wsgi:application --bind 0.0.0.0:8000"]
