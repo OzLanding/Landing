@@ -10,7 +10,6 @@ dependencies = [
     "psycopg2-binary>=2.9.11",
     "python-dotenv",
     "gunicorn",
-    "uvicorn>=0.44.0",
 ]
 
 [tool.isort]
