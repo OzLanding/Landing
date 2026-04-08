@@ -10,6 +10,7 @@ dependencies = [
     "psycopg2-binary>=2.9.11",
     "python-dotenv",
     "gunicorn",
+    "djangorestframework-simplejwt>=5.5.1",
 ]
 
 [tool.isort]
