@@ -230,7 +230,7 @@ class TransactionAuthTests(TransactionTestBase):
 
     def test_unauthenticated_list_blocked(self):
         response = self.client.get(LIST_CREATE_URL)
-        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
 
     def test_unauthenticated_create_blocked(self):
         data = {
@@ -241,9 +241,9 @@ class TransactionAuthTests(TransactionTestBase):
             "transacted_at": timezone.now().isoformat(),
         }
         response = self.client.post(LIST_CREATE_URL, data)
-        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
 
     def test_unauthenticated_detail_blocked(self):
         tx = self.create_transaction()
         response = self.client.get(detail_url(tx.pk))
-        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
