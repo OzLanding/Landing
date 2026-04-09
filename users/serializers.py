@@ -38,8 +38,3 @@ class SignupSerializer(serializers.ModelSerializer):
                 {"password2": "비밀번호가 일치하지 않습니다."}
             )
         return attrs
-
-    def create(self, validated_data):
-        validated_data.pop("password2")
-        password = validated_data.pop("password")
-        return User.objects.create_user(password=password, **validated_data)
