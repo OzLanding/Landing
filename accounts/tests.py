@@ -46,7 +46,7 @@ class AccountAPITest(APITestCase):
             bank_name='신한은행'
         )
         res = self.client.get(f'/api/accounts/{other_account.id}/')
-        self.assertEqual(res.status_code, 404)
+        self.assertEqual(res.status_code, 403)
 
     # 소프트 삭제
     def test_delete_account(self):
