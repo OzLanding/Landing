@@ -25,7 +25,7 @@ class TransactionListCreateView(ListCreateAPIView):
         return TransactionRepository.apply_filters(queryset, filters)
 
     def perform_create(self, serializer):
-        TransactionService.create_transaction(self.request.user, serializer)
+        return TransactionService.create_transaction(self.request.user, serializer)
 
 
 class TransactionDetailView(RetrieveUpdateDestroyAPIView):
