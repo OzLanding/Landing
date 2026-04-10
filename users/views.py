@@ -3,6 +3,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.permissions import AllowAny, IsAuthenticated
+from drf_spectacular.utils import extend_schema, OpenApiExample
 
 from .serializers import SignupSerializer, LoginSerializer
 from .services import UserService
@@ -11,6 +12,30 @@ from .services import UserService
 class SignupView(APIView):
     permission_classes = [AllowAny]
 
+    @extend_schema(
+        summary="회원가입",
+        request=SignupSerializer,
+        examples=[
+            OpenApiExample(
+                "회원가입 예시",
+                value={
+                    "email": "user@example.com",
+                    "username": "string",
+                    "password": "string",
+                    "password2": "string",
+                    "phone": "",
+                },
+                request_only=True,
+            ),
+        ],
+        responses={
+            201: {
+                "example": {
+                    "message": "인증 이메일이 발송되었습니다. 인증완료 후 로그인할 수 있습니다."
+                }
+            }
+        },
+    )
     def post(self, request):
         serializer = SignupSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
@@ -30,6 +55,13 @@ class SignupView(APIView):
 class EmailVerifyView(APIView):
     permission_classes = [AllowAny]
 
+    @extend_schema(
+        summary="이메일 인증",
+        parameters=[
+            {"name": "token", "in": "query", "required": True, "type": "string"}
+        ],
+        responses={200: {"example": {"message": "이메일 인증이 완료되었습니다."}}},
+    )
     def get(self, request):
         token = request.query_params.get("token")
 
@@ -52,6 +84,11 @@ class EmailVerifyView(APIView):
 class LoginView(APIView):
     permission_classes = [AllowAny]
 
+    @extend_schema(
+        summary="로그인",
+        request=LoginSerializer,
+        responses={200: {"example": {"message": "로그인 완료", "access": "eyJ..."}}},
+    )
     def post(self, request):
         serializer = LoginSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
@@ -79,8 +116,13 @@ class LoginView(APIView):
 class LogoutView(APIView):
     permission_classes = [IsAuthenticated]
 
+    @extend_schema(
+        summary="로그아웃",
+        request=None,
+        responses={200: {"example": {"message": "로그아웃 되었습니다."}}},
+    )
     def post(self, request):
-        refresh = request.data.get("refresh")
+        refresh = request.COOKIES.get("refresh")
 
         if not refresh:
             return Response(

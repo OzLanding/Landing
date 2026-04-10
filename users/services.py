@@ -52,6 +52,9 @@ class UserService:
         token = UserService.generate_email_token(user)
         verify_url = f"{settings.SITE_URL}/api/users/verify-email/?token={token}"
 
+        if settings.DEBUG:
+            print(f"\n[이메일 인증 링크] {verify_url}\n")
+
         send_mail(
             subject="Landing 이메일 인증",
             message=f"아래 링크를 클릭해 이메일 인증을 완료하세요.:\n{verify_url}",

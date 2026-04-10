@@ -19,3 +19,4 @@ CORS_ALLOW_CREDENTIALS = True
 SESSION_COOKIE_SECURE = False
 
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+EMAIL_CHARSET = "utf-8"

@@ -28,7 +28,7 @@ class SignupSerializer(serializers.ModelSerializer):
 
     def validate_phone(self, value):
         if not value:
-            return value
+            return None
 
         cleaned_phone = value.replace("-", "")
 
