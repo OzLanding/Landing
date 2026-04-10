@@ -19,9 +19,12 @@ class SignupSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True, validators=[validate_password])
     password2 = serializers.CharField(write_only=True)
 
-    class Meta:
-        model = User
-        fields = ["email", "username", "password", "password2", "phone"]
+    def validate(self, attrs):
+        if attrs["password"] != attrs["password2"]:
+            raise serializers.ValidationError(
+                {"password2": "비밀번호가 일치하지 않습니다."}
+            )
+        return attrs
 
     def validate_phone(self, value):
         if not value:
@@ -32,9 +35,10 @@ class SignupSerializer(serializers.ModelSerializer):
             )
         return value
 
-    def validate(self, attrs):
-        if attrs["password"] != attrs["password2"]:
-            raise serializers.ValidationError(
-                {"password2": "비밀번호가 일치하지 않습니다."}
-            )
-        return attrs
+    def create(self, validated_data):
+        validated_data.pop("password2")
+        return User.objects.create_user(**validated_data)
+
+    class Meta:
+        model = User
+        fields = ["email", "username", "password", "password2", "phone"]

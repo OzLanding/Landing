@@ -8,3 +8,10 @@ DEBUG = True
 
 # 개발 중엔 모든 호스트 허용 (runserver, docker, 다른 기기에서 접속 등)
 ALLOWED_HOSTS = ["*"]
+
+# CORS — 개발 환경에서는 프론트엔드 dev server 허용
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",
+    "http://127.0.0.1:3000",
+]
+CORS_ALLOW_CREDENTIALS = True
