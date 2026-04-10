@@ -15,7 +15,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent.parent
 # .env 파일 로드 (없으면 그냥 무시)
 load_dotenv(BASE_DIR / ".env")
 
-SECRET_KEY = os.environ.get("SECRET_KEY", "oi393y2h29gh92j1239fj29djf")
+SECRET_KEY = os.environ.get(
+    "SECRET_KEY", "+6p^y8m051a!&*x9yv-x3!gpo=lu1*vx!-io(cj@=0zk%067iu"
+)
 
 # DEBUG / ALLOWED_HOSTS 는 환경별 파일에서 정의
 
@@ -130,3 +132,7 @@ SPECTACULAR_SETTINGS = {
     "DESCRIPTION": "랜딩 페이지 프로젝트를 위한 API 문서입니다.",
     "VERSION": "1.0.0",
 }
+
+DEFAULT_FROM_EMAIL = "noreply@landing.com"
+
+SITE_URL = os.environ.get("SITE_URL", "http://localhost:8000")

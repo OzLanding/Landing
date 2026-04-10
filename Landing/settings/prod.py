@@ -36,3 +36,6 @@ CSRF_COOKIE_SECURE = True
 SECURE_HSTS_SECONDS = 60 * 60 * 24 * 30  # 30일
 SECURE_HSTS_INCLUDE_SUBDOMAINS = True
 SECURE_HSTS_PRELOAD = True
+
+SITE_URL = "https://api.lading.com"
+# 도메인 미정, 가칭 landing
