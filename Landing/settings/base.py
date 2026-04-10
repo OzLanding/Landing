@@ -15,7 +15,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent.parent
 # .env 파일 로드 (없으면 그냥 무시)
 load_dotenv(BASE_DIR / ".env")
 
-SECRET_KEY = os.environ.get("SECRET_KEY", "secret")
+SECRET_KEY = os.environ.get(
+    "SECRET_KEY", "+6p^y8m051a!&*x9yv-x3!gpo=lu1*vx!-io(cj@=0zk%067iu"
+)
 
 # DEBUG / ALLOWED_HOSTS 는 환경별 파일에서 정의
 
@@ -33,6 +35,7 @@ THIRD_PARTY_APPS = [
     "rest_framework_simplejwt",
     "rest_framework_simplejwt.token_blacklist",
     "drf_spectacular",
+    "corsheaders",
 ]
 
 LOCAL_APPS = [
@@ -45,6 +48,7 @@ INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
+    "corsheaders.middleware.CorsMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
@@ -117,6 +121,10 @@ SIMPLE_JWT = {
     "REFRESH_TOKEN_LIFETIME": timedelta(days=7),
     "ROTATE_REFRESH_TOKENS": True,
     "BLACKLIST_AFTER_ROTATION": True,
+    # simplejwt 기본값, 명시적으로 표시
+    "AUTH_HEADER_TYPES": ("Bearer",),
+    "USER_ID_FIELD": "id",
+    "USER_ID_CLAIM": "user_id",
 }
 
 SPECTACULAR_SETTINGS = {
@@ -124,3 +132,7 @@ SPECTACULAR_SETTINGS = {
     "DESCRIPTION": "랜딩 페이지 프로젝트를 위한 API 문서입니다.",
     "VERSION": "1.0.0",
 }
+
+DEFAULT_FROM_EMAIL = "noreply@landing.com"
+
+SITE_URL = os.environ.get("SITE_URL", "http://localhost:8000")
