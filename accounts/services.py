@@ -18,7 +18,7 @@ class AccountService:
 
     @staticmethod
     def create_account(serializer, user):
-        serializer.save(user=user)
+        return serializer.save(user=user)
 
     @staticmethod
     def delete_account(account):

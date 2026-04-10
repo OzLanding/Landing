@@ -11,13 +11,13 @@ from .services import AccountService
 class AccountListCreateView(APIView):
     permission_classes = [IsAuthenticated]
 
-    @extend_schema(responses=AccountSerializer)
+    @extend_schema(summary="계좌 목록 조회", responses=AccountSerializer)
     def get(self, request):
         accounts = AccountService.get_accounts(request.user)
         serializer = AccountSerializer(accounts, many=True)
         return Response(serializer.data)
 
-    @extend_schema(request=AccountSerializer, responses=AccountSerializer)
+    @extend_schema(summary="계좌 생성", request=AccountSerializer, responses=AccountSerializer)
     def post(self, request):
         serializer = AccountSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
@@ -28,13 +28,13 @@ class AccountListCreateView(APIView):
 class AccountDetailView(APIView):
     permission_classes = [IsAuthenticated]
 
-    @extend_schema(responses=AccountSerializer)
+    @extend_schema(summary="계좌 단건 조회", responses=AccountSerializer)
     def get(self, request, pk):
         account = AccountService.get_account(pk, request.user)
         serializer = AccountSerializer(account)
         return Response(serializer.data)
 
-    @extend_schema(responses=None)
+    @extend_schema(summary="계좌 삭제", responses=None)
     def delete(self, request, pk):
         account = AccountService.get_account(pk, request.user)
         AccountService.delete_account(account)
