@@ -64,9 +64,11 @@ class UserService:
 
     @staticmethod
     def login(serializer) -> dict:
-        data = serializer.validated_data
+        validated_data = serializer.validated_data
 
-        user = authenticate(email=data["email"], password=data["password"])
+        user = authenticate(
+            email=validated_data["email"], password=validated_data["password"]
+        )
 
         if not user:
             raise ValidationError("확인되지 않는 이메일 또는 비밀번호 입니다.")
