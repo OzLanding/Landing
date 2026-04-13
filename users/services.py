@@ -4,7 +4,7 @@ from django.core import signing
 from django.core.mail import send_mail
 from django.conf import settings
 from django.contrib.auth import authenticate
-from django.core.exceptions import ValidationError
+from rest_framework.exceptions import ValidationError
 
 
 class UserService:
