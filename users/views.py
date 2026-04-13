@@ -3,6 +3,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.permissions import AllowAny, IsAuthenticated
+from rest_framework_simplejwt.tokens import RefreshToken
 from drf_spectacular.utils import extend_schema, OpenApiExample
 
 from .serializers import SignupSerializer, LoginSerializer
@@ -87,7 +88,7 @@ class LoginView(APIView):
     @extend_schema(
         summary="로그인",
         request=LoginSerializer,
-        responses={200: {"example": {"message": "로그인 완료", "access": "eyJ..."}}},
+        responses={200: {"example": {"message": "로그인 완료"}}},
     )
     def post(self, request):
         serializer = LoginSerializer(data=request.data)
@@ -96,18 +97,19 @@ class LoginView(APIView):
         tokens = UserService.login(serializer)
 
         response = Response(
-            {
-                "message": "로그인 완료",
-                "access": tokens["access"],
-            },
+            {"message": "로그인 완료"},
             status=status.HTTP_200_OK,
         )
 
         response.set_cookie(
-            key="refresh",
-            value=tokens["refresh"],
+            key="access",
+            value=tokens["access"],
             httponly=True,
             samesite="Lax",
+        )
+
+        response.set_cookie(
+            key="refresh", value=tokens["refresh"], httponly=True, samesite="Lax"
         )
 
         return response
@@ -132,7 +134,52 @@ class LogoutView(APIView):
 
         try:
             UserService.logout(refresh)
-            return Response({"message": "로그아웃 되었습니다."})
+            response = Response({"message": "로그아웃 되었습니다."})
+            response.delete_cookie("access")
+            response.delete_cookie("refresh")
+
+            return response
+
+        except Exception:
+            return Response(
+                {"error": "유효하지 않은 토큰입니다."},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
+
+class TokenRefreshView(APIView):
+    permission_classes = [AllowAny]
+
+    def post(self, request):
+        refresh = request.COOKIES.get("refresh")
+
+        if not refresh:
+            return Response(
+                {"error": "refresh 토큰이 필요합니다."},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
+        try:
+            token = RefreshToken(refresh)
+            response = Response(
+                {"message": "토큰이 갱신되었습니다."},
+                status=status.HTTP_200_OK,
+            )
+            response.set_cookie(
+                key="access",
+                value=str(token.access_token),
+                httponly=True,
+                samesite="Lax",
+            )
+            response.set_cookie(
+                key="refresh",
+                value=str(token),
+                httponly=True,
+                samesite="Lax",
+            )
+
+            return response
+
         except Exception:
             return Response(
                 {"error": "유효하지 않은 토큰입니다."},
