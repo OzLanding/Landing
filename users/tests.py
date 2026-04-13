@@ -7,7 +7,7 @@ from .services import UserService
 User = get_user_model()
 
 
-class SomeTest(APITestCase):
+class SignupTest(APITestCase):
     def setUp(self):
         self.url = "/api/users/signup/"
         self.valid_data = {
