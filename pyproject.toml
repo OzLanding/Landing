@@ -10,8 +10,12 @@ dependencies = [
     "psycopg2-binary>=2.9.11",
     "python-dotenv",
     "gunicorn",
-    "uvicorn>=0.44.0",
+    "djangorestframework-simplejwt>=5.5.1",
+    "django-cors-headers>=4.9.0",
 ]
+
+[tool.isort]
+profile = "black"
 
 [dependency-groups]
 dev = [

@@ -3,6 +3,7 @@
 .env.*
 
 # Python
+.venv/
 __pycache__/
 *.pyc
 *.pyo
@@ -27,3 +28,6 @@ db.sqlite3
 /postgres_data/
 
 .claude/
+
+# macOS
+.DS_Store
