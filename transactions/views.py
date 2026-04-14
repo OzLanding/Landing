@@ -1,3 +1,4 @@
+from drf_spectacular.utils import extend_schema, extend_schema_view
 from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
 from rest_framework.permissions import IsAuthenticated
 
@@ -6,6 +7,10 @@ from transactions.serializers import TransactionDetailSerializer, TransactionSer
 from transactions.services import TransactionService
 
 
+@extend_schema_view(
+    list=extend_schema(summary="거래 목록 조회"),
+    create=extend_schema(summary="거래 생성"),
+)
 class TransactionListCreateView(ListCreateAPIView):
     serializer_class = TransactionSerializer
     permission_classes = [IsAuthenticated]
@@ -28,6 +33,12 @@ class TransactionListCreateView(ListCreateAPIView):
         return TransactionService.create_transaction(self.request.user, serializer)
 
 
+@extend_schema_view(
+    retrieve=extend_schema(summary="거래 상세 조회"),
+    update=extend_schema(summary="거래 수정"),
+    partial_update=extend_schema(summary="거래 부분 수정"),
+    destroy=extend_schema(summary="거래 삭제"),
+)
 class TransactionDetailView(RetrieveUpdateDestroyAPIView):
     serializer_class = TransactionDetailSerializer
     permission_classes = [IsAuthenticated]
